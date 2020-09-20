@@ -33,3 +33,12 @@ function findArea () {
 findArea()
 // End of the first task
 
+function fractionalRounding (numA, numB, n) {
+	numA = numA.toFixed(n)
+	numB = numB.toFixed(n)
+
+	console.log(+(String(numA)).split('.')[1])
+	console.log(+(String(numB)).split('.')[1])
+}
+fractionalRounding(13.123456789, 2.123, 5)
+// End of the second task
