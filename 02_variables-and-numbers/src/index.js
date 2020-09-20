@@ -40,5 +40,11 @@ function fractionalRounding (numA, numB, n) {
 	console.log(+(String(numA)).split('.')[1])
 	console.log(+(String(numB)).split('.')[1])
 }
-fractionalRounding(13.123456789, 2.123, 5)
+fractionalRounding(13.123456789, 2.123, 5) // Write two numbers here
 // End of the second task
+
+function randomNum(min, max){
+	let v  = Math.round(min+Math.random() * (max-min));
+	return v%2 != 0?v:randomNum(min, max);
+}
+console.log(randomNum(-3, -10)) // The range of numbers to write here
