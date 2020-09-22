@@ -1,9 +1,9 @@
-function findOppositeNumbers (x1, x2, y1, y2) {
+function findArea (x1, x2, y1, y2) {
 	const sideA = Math.abs(x1 - x2)
 	const sideB = Math.abs(y1 - y2)
 	console.log(sideA * sideB)
 }
-findOppositeNumbers(2, 10, 3, 5)
+findArea(2, 10, 3, 5)
 // End of the first task
 
 function fractionalRounding (numA, numB, n) {
