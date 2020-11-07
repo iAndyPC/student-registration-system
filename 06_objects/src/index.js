@@ -14,7 +14,7 @@ function sortingUsers (searchIn, key, value) { //Делал еще по стар
 		}
 	}
 	console.log(result);
-}// sortingUsers(users, 'name', 'Иван');
+} sortingUsers(users, 'name', 'Иван');
 //===============================
 
 let optionsForSelect = [
@@ -32,20 +32,20 @@ function addElement_select (options_array = [{label: 'select1'}]) {
 		select.append(option)
 	}
 	document.body.append(select)
-}// addElement_select(optionsForSelect);
+} addElement_select(optionsForSelect);
 //===============================
 
 let random_array = [ 1, 2, 'три', 'четыре', ]
 let random_object = { value1: 'Значение 1', value2: 'Значение 2'}
 
 function modifyPrimitiveForSelectOptions (arr, obj) {
-	let tempObject = {}; // { label: 'option1' }
 	let result = []; // [ { label: 'option1' }, ]
 
-	for (let arrElement of arr) {
-		tempObject.label = arrElement
-		result.push(tempObject)
+	for (let arrElement of arr) { //For an array
+		result.push( {label: arrElement} )
 	}
-	console.log(result)
-
+	for (let key in obj) { //For object
+		result.push( {label: obj[key]} )
+	}
+	console.log(result);
 } modifyPrimitiveForSelectOptions(random_array, random_object);
