@@ -26,3 +26,22 @@
 		timerForCounter = setInterval(counter, 1000);
 	})
 })();
+
+function createInputAndFieldForText () {
+	let textNode = document.createElement('p');
+	let inputText = document.createElement('input');
+	let textField = document.createElement('h2');
+	let timerForAddText;
+
+	textNode.textContent = 'Ввести текст';
+	document.body.append(textNode);
+	document.body.append(inputText);
+	document.body.append(textField);
+	inputText.addEventListener("input", () => {
+		clearInterval(timerForAddText);
+		function addText () {
+			textField.textContent = inputText.value
+		}
+		timerForAddText = setInterval(addText, 300);
+	})
+} createInputAndFieldForText();
