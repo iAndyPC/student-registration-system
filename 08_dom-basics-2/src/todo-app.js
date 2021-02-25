@@ -65,8 +65,10 @@
 		let todoAppTitle = createAppTitle(title);
 		let todoItemForm = createTodoItemForm();
 		let todoList = createTodoList();
-		let arrayWithCases_empty = [];
-		localStorage.setItem(keyLocalStorage, JSON.stringify(arrayWithCases_empty));
+		if (localStorage.getItem(keyLocalStorage) == null) { // If there is no array with cases in localStorage
+            let arrayWithCases_empty = [];
+            localStorage.setItem(keyLocalStorage, JSON.stringify(arrayWithCases_empty));
+        }
 
 		// To enable or disable the add case button
 		todoItemForm.button.disabled = true
@@ -136,8 +138,6 @@
 				let arrFromLocalStorage = JSON.parse(localStorage[keyLocalStorage])
 				arrFromLocalStorage.push(arrayTodoList[i]) // push 1 case from external array
 				localStorage.setItem(keyLocalStorage, JSON.stringify(arrFromLocalStorage))
-
-				//arrayTodoList.shift()
 
 				// Status change done or not
 				todoItem_fromArray.doneButton.addEventListener('click', function() {
