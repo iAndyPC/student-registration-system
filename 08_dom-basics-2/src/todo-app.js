@@ -127,7 +127,7 @@
 		}
 
 		// Cases from external array
-		if (arrayTodoList !== undefined) { // If an array is added, cases from the array will appear
+		if (arrayTodoList !== undefined && localStorage.getItem(keyLocalStorage) === "[]") { // If an array is added and localStorage is empty, cases from the array will appear
 			for (let i = 0; i < arrayTodoList.length; i++) {
 				// Case creation
 				let todoItem_fromArray = createTodoItem(arrayTodoList[i].name, arrayTodoList[i].done);
