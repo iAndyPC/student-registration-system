@@ -119,6 +119,10 @@
 							arrCasesAfterDeletion.push(objWithCase)
 						});
 						localStorage.setItem(keyLocalStorage, JSON.stringify(arrCasesAfterDeletion))
+
+                        if (localStorage.getItem(keyLocalStorage) === "[]") {
+                            localStorage.setItem('keyTodoApp_noMoreCasesFromExternalArray', true)
+                        }
 					}
 					console.log(localStorage[keyLocalStorage])
 				});
@@ -127,7 +131,7 @@
 		}
 
 		// Cases from external array
-		if (arrayTodoList !== undefined && localStorage.getItem(keyLocalStorage) === "[]") { // If an array is added and localStorage is empty, cases from the array will appear
+		if (arrayTodoList !== undefined && localStorage.getItem(keyLocalStorage) === "[]" && localStorage.getItem('keyTodoApp_noMoreCasesFromExternalArray') == null) { // If an array is added and localStorage is empty, cases from the array will appear
 			for (let i = 0; i < arrayTodoList.length; i++) {
 				// Case creation
 				let todoItem_fromArray = createTodoItem(arrayTodoList[i].name, arrayTodoList[i].done);
@@ -174,6 +178,10 @@
 							arrCasesAfterDeletion.push(objWithCase)
 						});
 						localStorage.setItem(keyLocalStorage, JSON.stringify(arrCasesAfterDeletion))
+
+                        if (localStorage.getItem(keyLocalStorage) === "[]") {
+                            localStorage.setItem('keyTodoApp_noMoreCasesFromExternalArray', true)
+                        }
 					}
 					console.log(localStorage[keyLocalStorage])
 				});
@@ -228,6 +236,10 @@
 						arrCasesAfterDeletion.push(objWithCase)
 					});
 					localStorage.setItem(keyLocalStorage, JSON.stringify(arrCasesAfterDeletion))
+
+                    if (localStorage.getItem(keyLocalStorage) === "[]") {
+                        localStorage.setItem('keyTodoApp_noMoreCasesFromExternalArray', true)
+                    }
 				}
 			});
 
