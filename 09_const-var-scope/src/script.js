@@ -2,9 +2,9 @@
 
 function gamePairs () {
    const BUTTON_RELOAD = document.querySelector('button');
-   BUTTON_RELOAD.onclick = function (event) {
+   BUTTON_RELOAD.addEventListener('click',function () {
       window.location.reload();
-   }
+   })
 
    const ARR_PAIRS_OF_NUMBERS = [
       1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8,
@@ -38,7 +38,7 @@ function gamePairs () {
       card.classList.toggle('game-container__card_closed');
       card.classList.toggle('game-container__card_open');
    }
-   gameContainer.onclick = function (event) {
+   gameContainer.addEventListener('click', function (event) {
       let target = event.target.closest('li')
       if (!target) return;
       flipCard(target);
@@ -75,6 +75,6 @@ function gamePairs () {
          cardOne = target;
          cardTwo = undefined;
       }
-   }
+   })
 
 } gamePairs()
