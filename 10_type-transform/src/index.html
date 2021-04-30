@@ -43,38 +43,34 @@
    </table>
    <button type="button" class="btn btn-primary mb-3" id="openFormAddStudent">Добавить студента</button>
 
-   <form class="open mt-5">
+   <form class="closed mt-5">
       <h3 class="mb-3">Добавление студента</h3>
       <div class="mb-2">
          <label for="nameInput" class="form-label">Имя</label>
-         <input type="text" class="form-control nameInput" id="nameInput" required>
-         <div id="nameError" class="form-text">Текст ошибки для имени</div>
+         <input type="text" class="form-control" id="nameInput" required>
       </div>
       <div class="mb-2">
          <label for="surnameInput" class="form-label">Фамилия</label>
-         <input type="text" class="form-control surnameInput" id="surnameInput" required>
-         <div id="surnameError" class="form-text">Текст ошибки для фамилии</div>
+         <input type="text" class="form-control" id="surnameInput" required>
       </div>
       <div class="mb-3">
          <label for="patronymicInput" class="form-label">Отчество</label>
-         <input type="text" class="form-control patronymicInput" id="patronymicInput" required>
-         <div id="patronymicError" class="form-text">Текст ошибки для отчества</div>
+         <input type="text" class="form-control" id="patronymicInput" required>
       </div>
 
       <div class="mb-3">
          <label for="dateOfBirthInput" class="form-label">Дата рождения</label>
          <input type="date" class="form-control" data-date-format="dd-mm-yyyy" id="dateOfBirthInput" required>
-         <div id="dateOfBirthError" class="form-text">Текст ошибки для даты рождения</div>
+         <div id="dateOfBirthError" class="form-text closed alert-warning">Год рождения должен быть больше 1900</div>
       </div>
       <div class="mb-3">
-         <label for="YearOfBeginningInput" class="form-label">Год начала обучения</label>
-         <input type="text" class="form-control" id="YearOfBeginningInput" aria-describedby="YearOfBeginningHelp" required>
-         <div id="YearOfBeginningHelp" class="form-text">Год в формате '2XXX'</div>
+         <label for="yearOfBeginningInput" class="form-label">Год начала обучения</label>
+         <input type="text" class="form-control" id="yearOfBeginningInput" aria-describedby="yearOfBeginningHelp" required>
+         <div id="yearOfBeginningHelp" class="form-text">Год в формате '2XXX'</div>
       </div>
       <div class="mb-3">
          <label for="facultyInput" class="form-label">Факультет</label>
          <input type="text" class="form-control" id="facultyInput" required>
-         <div id="facultyError" class="form-text">Текст ошибки для факультета</div>
       </div>
       <button type="submit" class="btn btn-primary mb-3">Готово</button>
    </form>
