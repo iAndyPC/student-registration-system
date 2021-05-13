@@ -22,8 +22,6 @@ let students = [
 (function (arr) { //Loading an array into localStorage
    if (localStorage.getItem('studentsArray') == null) {
       localStorage.setItem('studentsArray', JSON.stringify(arr));
-
-      console.log(JSON.parse(localStorage.getItem('studentsArray')))
    }
 })(students);
 
@@ -126,7 +124,7 @@ function sortingStudents () { //Creates a sorted array of students and passes it
       let th = e.target.closest('th');
       if (!th) return;
       if (!tableHead.contains(th)) return;
-      //We take an array from localStorage
+      //take an array from localStorage
       let studentsArray = JSON.parse(localStorage.getItem('studentsArray'));
       let sortedArray;
       if (th.classList.contains('tableHead_name')) {
@@ -138,7 +136,7 @@ function sortingStudents () { //Creates a sorted array of students and passes it
             return 0;
          });
          arrayInDOM(sortedArray);
-      }
+      } //sorting by faculty
       if (th.classList.contains('tableHead_faculty')) {
          sortedArray = studentsArray.sort(function (a, b) {
             let facultyA = a.faculty.toLowerCase(), facultyB = b.faculty.toLowerCase();
@@ -147,14 +145,14 @@ function sortingStudents () { //Creates a sorted array of students and passes it
             return 0;
          })
          arrayInDOM(sortedArray);
-      }
+      } //sort by date of birth
       if (th.classList.contains('tableHead_dateOfBirth')) {
          sortedArray = studentsArray.sort(function (a, b) {
             let dateA = new Date(a.dateOfBirth), dateB = new Date(b.dateOfBirth);
             return dateA - dateB;
          })
          arrayInDOM(sortedArray);
-      }
+      } //sort by start year
       if (th.classList.contains('tableHead_yearOfBeginning')) {
          sortedArray = studentsArray.sort(function (a, b) {
             return a.yearOfBeginning - b.yearOfBeginning;
@@ -164,13 +162,53 @@ function sortingStudents () { //Creates a sorted array of students and passes it
    })
 } sortingStudents();
 
+function declOfNum(n, text_forms) {
+   n = Math.abs(n) % 100;
+   let n1 = n % 10;
+   if (n > 10 && n < 20) { return text_forms[2]; }
+   if (n1 > 1 && n1 < 5) { return text_forms[1]; }
+   if (n1 === 1) { return text_forms[0]; }
+   return text_forms[2];
+}
+
 function arrayInDOM (arrayStudents, newStudent) { //Adding an array or new student to the DOM
    let tableBody = document.querySelector('tbody');
    for (let student of arrayStudents) {
       let tr = document.createElement('tr'), td = document.createElement('td');
-      td = student.surname + ' ' + student.name + ' ' + student.patronymic;
+      //create name
+      debugger;
+      td.textContent = student.surname +' '+ student.name +' '+ student.patronymic;
       tr.append(td);
-      td = student.faculty;
+      //create faculty
+      td.textContent = student.faculty;
       tr.append(td);
+      //create date of birth and age
+      let todayDate = new Date(), todayYear = todayDate.getFullYear();
+      let todayMonth = todayDate.getMonth()+1, todayDay = todayDate.getDate();
+      let birthYear = +student.dateOfBirth.slice(0, 4);
+      let birthMonth = +student.dateOfBirth.slice(5, 7);
+      let birthDay = +student.dateOfBirth.slice(8, 10);
+      let age = todayYear - birthYear;
+      if (todayMonth < (birthMonth - 1)) {
+         age--;
+      }
+      if (((birthMonth - 1) === todayMonth) && (todayDay < birthDay)) {
+         age--;
+      }
+      td.textContent = birthDay +'.'+ birthMonth +'.'+ birthYear +' '+'('+ age +' '+ declOfNum(age, ['год', 'года', 'лет']) +')';
+      tr.append(td);
+      //create years of study and course
+      let yearOfGraduation = student.yearOfBeginning + 4;
+      let yearOfBeginning = +student.yearOfBeginning;
+      let textGraduatedOrCourseNumber;
+      if (yearOfGraduation === todayYear && todayMonth > 9 || yearOfGraduation < todayYear) {
+         textGraduatedOrCourseNumber = 'закончил';
+      } else {
+         textGraduatedOrCourseNumber = yearOfGraduation - yearOfBeginning +' курс';
+      }
+      td.textContent = yearOfBeginning +'-'+ yearOfGraduation +' ('+ textGraduatedOrCourseNumber +')';
+      tr.append(td);
+      console.log(tr);
+      tableBody.append(tr)
    }
 }
