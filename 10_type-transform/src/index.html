@@ -11,6 +11,16 @@
 <body>
 
 <div class="container">
+   <div class="input-group input-group-sm mb-2 mt-3">
+      <span class="input-group-text">ФИО</span>
+      <input type="text" class="form-control" aria-label="Name filter" id="filterName">
+      <span class="input-group-text">Факультет</span>
+      <input type="text" class="form-control" aria-label="Faculty filter" id="filterFaculty">
+      <span class="input-group-text">Год начала</span>
+      <input type="text" class="form-control" aria-label="Year of beginning filter" id="filterYearOfBeginning">
+      <span class="input-group-text">Год окончания</span>
+      <input type="text" class="form-control" aria-label="Year of graduation filter" id="filterYearOfGraduation">
+   </div>
    <table class="table">
       <thead>
       <tr class="firstTr">
@@ -21,24 +31,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
-         <td>Мухина Алиса Леонидовна</td>
-         <td>Писательство</td>
-         <td>1994.5.11</td>
-         <td>2020</td>
-      </tr>
-      <tr>
-         <td>Мельников Дмитрий Матвеевич</td>
-         <td>Архитектура</td>
-         <td>1995.1.14</td>
-         <td>2019</td>
-      </tr>
-      <tr>
-         <td>Колесникова Мария Александровна</td>
-         <td>Дизайн</td>
-         <td>1997.10.4</td>
-         <td>2015</td>
-      </tr>
+
       </tbody>
    </table>
    <button type="button" class="btn btn-primary mb-3" id="openFormAddStudent">Добавить студента</button>
