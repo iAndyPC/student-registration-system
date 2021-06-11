@@ -11,7 +11,7 @@
 <body>
 
 <div class="container">
-   <div class="input-group input-group-sm mb-2 mt-3">
+   <div class="input-group input-group-sm mb-2 mt-3" id="filterContainer">
       <span class="input-group-text">ФИО</span>
       <input type="text" class="form-control" aria-label="Name filter" id="filterName">
       <span class="input-group-text">Факультет</span>
@@ -24,10 +24,10 @@
    <table class="table">
       <thead>
       <tr class="firstTr">
-         <th scope="col" class="tableHead_name">ФИО</th>
-         <th scope="col" class="tableHead_faculty">Факультет</th>
-         <th scope="col" class="tableHead_dateOfBirth">Дата рождения</th>
-         <th scope="col" class="tableHead_yearOfBeginning">Год начала обучения и курс</th>
+         <th scope="col" id="tableHead_name">ФИО</th>
+         <th scope="col" id="tableHead_faculty">Факультет</th>
+         <th scope="col" id="tableHead_dateOfBirth">Дата рождения</th>
+         <th scope="col" id="tableHead_yearOfBeginning">Год начала обучения и курс</th>
       </tr>
       </thead>
       <tbody>

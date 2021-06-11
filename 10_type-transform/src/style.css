@@ -5,3 +5,6 @@ display: none;
 .open {
    display: block;
 }
+th {
+   cursor: pointer;
+}

@@ -8,7 +8,7 @@ let students = [
    {name: 'Марк', surname: 'Иванов', patronymic: 'Максимович', dateOfBirth: new Date(1998, 4, 7), yearOfBeginning : 2013, faculty: 'Право'},
 ];
 
-(function () { //button to open the form for adding a student
+(function () { //Handling the button to open the add student form
    let buttonOpenForm = document.getElementById('openFormAddStudent');
    buttonOpenForm.addEventListener('click', function () {
       let formAddStudent = document.querySelector('form');
@@ -115,331 +115,69 @@ function addingStudent () { //An object with a student is created and added to t
    });
 } addingStudent();
 
-function sortingStudents () { //Creates a sorted array of students and passes it to the render function
-   let tableHead = document.querySelector('thead');
-   tableHead.addEventListener('click', function (e) {
-      let th = e.target.closest('th');
-      if (!th) return;
-      if (!tableHead.contains(th)) return;
-      //take an array from localStorage
-      let studentsArray = JSON.parse(localStorage.getItem('studentsArray'));
-      let sortedArray;
-      if (th.classList.contains('tableHead_name')) {
-         sortedArray = studentsArray.sort(function (a, b) {
-            let nameA = a.surname.toLowerCase() + a.name.toLowerCase() + a.patronymic.toLowerCase();
-            let nameB = b.surname.toLowerCase() + b.name.toLowerCase() + b.patronymic.toLowerCase();
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-            return 0;
-         });
-         studentInDOM(sortedArray);
-      } //sorting by faculty
-      if (th.classList.contains('tableHead_faculty')) {
-         sortedArray = studentsArray.sort(function (a, b) {
-            let facultyA = a.faculty.toLowerCase(), facultyB = b.faculty.toLowerCase();
-            if (facultyA < facultyB) return -1;
-            if (facultyA > facultyB) return 1;
-            return 0;
-         })
-         studentInDOM(sortedArray);
-      } //sort by date of birth
-      if (th.classList.contains('tableHead_dateOfBirth')) {
-         sortedArray = studentsArray.sort(function (a, b) {
-            let dateA = new Date(a.dateOfBirth), dateB = new Date(b.dateOfBirth);
-            return dateA - dateB;
-         })
-         studentInDOM(sortedArray);
-      } //sort by start year
-      if (th.classList.contains('tableHead_yearOfBeginning')) {
-         sortedArray = studentsArray.sort(function (a, b) {
-            return a.yearOfBeginning - b.yearOfBeginning;
-         })
-         studentInDOM(sortedArray);
-      }
+function sortingStudents () { //Sorting students by swapping tableRow in a table
+   const tableBody = document.querySelector("tbody");
+   const tableHead = document.querySelector("thead");
+   const tableHead_name = document.getElementById('tableHead_name')
+   const tableHead_faculty = document.getElementById('tableHead_faculty');
+   const tableHead_dateOfBirth = document.getElementById('tableHead_dateOfBirth');
+   const tableHead_yearOfBeginning = document.getElementById('tableHead_yearOfBeginning');
+   tableHead_name.addEventListener("click", (e) => {
+      let sortedRows = Array.from(tableBody.rows)
+         .sort((rowA, rowB) => rowA.cells[0].innerHTML > rowB.cells[0].innerHTML ? 1 : -1);
+      tableBody.append(...sortedRows);
+   })
+   tableHead_faculty.addEventListener("click", (e) => {
+      let sortedRows = Array.from(tableBody.rows)
+         .sort((rowA, rowB) => rowA.cells[1].innerHTML > rowB.cells[1].innerHTML ? 1 : -1);
+      tableBody.append(...sortedRows);
+   })
+   tableHead_dateOfBirth.addEventListener("click", (e) => {
+      let sortedRows = Array.from(tableBody.rows)
+         .sort((rowA, rowB) => rowA.cells[2].innerHTML > rowB.cells[2].innerHTML ? 1 : -1);
+      tableBody.append(...sortedRows);
+   })
+   tableHead_yearOfBeginning.addEventListener("click", (e) => {
+      let sortedRows = Array.from(tableBody.rows)
+         .sort((rowA, rowB) => rowA.cells[3].innerHTML > rowB.cells[3].innerHTML ? 1 : -1);
+      tableBody.append(...sortedRows);
    })
 } sortingStudents();
 
 function filteringStudents () {
-   const startingArray = JSON.parse(localStorage.getItem('studentsArray'));
+   const studentsArr = JSON.parse(localStorage.getItem('studentsArray'));
    const filterInput_fullName = document.getElementById('filterName');
    const filterInput_faculty = document.getElementById('filterFaculty');
    const filterInput_yearOfBeginning = document.getElementById('filterYearOfBeginning');
    const filterInput_yearOfGraduation = document.getElementById('filterYearOfGraduation');
-   let filteringDelay_yearOfBeginning, filteringDelay_faculty, filteringDelay_fullName;
-   let filteringDelay_yearOfGraduation, filteredArray = [];
-   let arrayFilteredBy_fullName = [], arrayFilteredBy_faculty = [];
-   let arrayFilteredBy_yearOfBeginning = [], arrayFilteredBy_yearOfGraduation = [];
-
-   function filterBy_name () {
-      let arrayToWorkWith = [], checkAddOrNo = true;
-      if (arrayFilteredBy_faculty.length > 0) { //if the faculty filter has worked
-         for (let student of arrayFilteredBy_faculty) {
-            arrayToWorkWith.push(student)
-         }
-      }//if the filter by the year of start has worked
-      if (arrayFilteredBy_yearOfBeginning.length > 0) {
-         for (let student of arrayFilteredBy_yearOfBeginning) {
-            for (let sameStudent of arrayToWorkWith) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) { arrayToWorkWith.push(student) }
-         }
-      }//if the filter by end year has worked
-      if (arrayFilteredBy_yearOfGraduation.length > 0) {
-         checkAddOrNo = true;
-         for (let student of arrayFilteredBy_yearOfGraduation) {
-            for (let sameStudent of arrayToWorkWith) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) { arrayToWorkWith.push(student) }
-         }
-      }//if none of the filters has worked
-      if (arrayToWorkWith.length === 0) {
-         arrayToWorkWith = startingArray
-      }//the filter itself
-      checkAddOrNo = true;
-      for (let student of arrayToWorkWith) {
-         let string_fullName = student.surname.toLowerCase() + student.name.toLowerCase() + student.patronymic.toLowerCase();
-         if (string_fullName.includes(filterInput_fullName.value.toLowerCase())) {
-            for (let sameStudent of filteredArray) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) {
-               filteredArray.push(student);
-               arrayFilteredBy_fullName.push(student);
-            }
-         }
+   let filteredArr = [];
+   for (let student of studentsArr) {
+      const regName = new RegExp(filterInput_fullName.value, 'i');
+      const regFaculty = new RegExp(filterInput_faculty.value, 'i');
+      const regYearOfBeginning = new RegExp(filterInput_yearOfBeginning.value, 'i');
+      const regYearOfGraduation = new RegExp(filterInput_yearOfGraduation.value, 'i');
+      const str_fullName = student.surname + student.name + student.patronymic;
+      const str_faculty = student.faculty;
+      const str_yearOfBeginning = String(student.yearOfBeginning);
+      const str_yearOfGraduation = String(student.yearOfBeginning + 4);
+      if (regName.test(str_fullName) && regFaculty.test(str_faculty) && regYearOfBeginning.test(str_yearOfBeginning) && regYearOfGraduation.test(str_yearOfGraduation) ) {
+         filteredArr.push(student)
       }
-      //if input is empty, clear the array filtered by this filter
-      if (filterInput_fullName.value === '') {
-         console.log(filteredArray)
-         arrayFilteredBy_fullName = [];
-         if (arrayFilteredBy_faculty.length > 0) {
-            for (let student of arrayFilteredBy_faculty) {
-               filteredArray.push(student)
-            }
-         }
-         if (arrayFilteredBy_yearOfBeginning.length > 0) {
-            for (let student of arrayFilteredBy_yearOfBeginning) {
-               filteredArray.push(student)
-            }
-         }
-         if (arrayFilteredBy_yearOfGraduation.length > 0) {
-            for (let student of arrayFilteredBy_yearOfGraduation) {
-               filteredArray.push(student)
-            }
-         }
-      }
-      studentInDOM(filteredArray);
-      filteredArray = [];
    }
-   function filterBy_faculty () {
-      let arrayToWorkWith = [], checkAddOrNo = true;
-      if (arrayFilteredBy_fullName.length > 0) { //if the filter by name worked
-         for (let student of arrayFilteredBy_fullName) {
-            arrayToWorkWith.push(student)
-         }
-      }//if the filter by the year of start has worked
-      if (arrayFilteredBy_yearOfBeginning.length > 0) {
-         for (let student of arrayFilteredBy_yearOfBeginning) {
-            for (let sameStudent of arrayToWorkWith) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) { arrayToWorkWith.push(student) }
-         }
-      }//if the filter by end year has worked
-      if (arrayFilteredBy_yearOfGraduation.length > 0) {
-         checkAddOrNo = true;
-         for (let student of arrayFilteredBy_yearOfGraduation) {
-            for (let sameStudent of arrayToWorkWith) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) { arrayToWorkWith.push(student) }
-         }
-      }//if none of the filters has worked
-      if (arrayToWorkWith.length === 0) {
-         arrayToWorkWith = startingArray
-      }//the filter itself
-      checkAddOrNo = true;
-      for (let student of arrayToWorkWith) {
-         let string_faculty = student.faculty.toLowerCase();
-         if (string_faculty.includes(filterInput_faculty.value.toLowerCase())) {
-            for (let sameStudent of filteredArray) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) {
-               filteredArray.push(student);
-               arrayFilteredBy_faculty.push(student);
-            }
-         }
-      }
-      //if input is empty, clear the array filtered by this filter
-      if (filterInput_faculty.value === '') {
-         console.log(filteredArray)
-         arrayFilteredBy_faculty = [];
-         if (arrayFilteredBy_fullName.length > 0) {
-            for (let student of arrayFilteredBy_fullName) {
-               filteredArray.push(student)
-            }
-         }
-         if (arrayFilteredBy_yearOfBeginning.length > 0) {
-            for (let student of arrayFilteredBy_yearOfBeginning) {
-               filteredArray.push(student)
-            }
-         }
-         if (arrayFilteredBy_yearOfGraduation.length > 0) {
-            for (let student of arrayFilteredBy_yearOfGraduation) {
-               filteredArray.push(student)
-            }
-         }
-      }
-      studentInDOM(filteredArray);
-      filteredArray = [];
-   }
-   function filterBy_yearOfBeginning () {
-      let arrayToWorkWith = [], checkAddOrNo = true;
-      if (arrayFilteredBy_fullName.length > 0) { //if the filter by name worked
-         for (let student of arrayFilteredBy_fullName) {
-            arrayToWorkWith.push(student)
-         }
-      }//if the faculty filter has worked
-      if (arrayFilteredBy_faculty.length > 0) {
-         for (let student of arrayFilteredBy_faculty) {
-            for (let sameStudent of arrayToWorkWith) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) { arrayToWorkWith.push(student) }
-         }
-      }//if the filter by end year has worked
-      if (arrayFilteredBy_yearOfGraduation.length > 0) {
-         checkAddOrNo = true;
-         for (let student of arrayFilteredBy_yearOfGraduation) {
-            for (let sameStudent of arrayToWorkWith) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) { arrayToWorkWith.push(student) }
-         }
-      }//if none of the filters has worked
-      if (arrayToWorkWith.length === 0) {
-         arrayToWorkWith = startingArray
-      }//the filter itself
-      checkAddOrNo = true;
-      for (let student of arrayToWorkWith) {
-         let number_yearOfBeginning = Number(student.yearOfBeginning);
-         if (number_yearOfBeginning === Number(filterInput_yearOfBeginning.value)) {
-            for (let sameStudent of filteredArray) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) {
-               filteredArray.push(student);
-               arrayFilteredBy_yearOfBeginning.push(student);
-            }
-         }
-      }
-      //if input is empty, clear the array filtered by this filter
-      if (filterInput_yearOfBeginning.value === '') {
-         arrayFilteredBy_yearOfBeginning = [];
-         if (arrayFilteredBy_fullName.length > 0) {
-            for (let student of arrayFilteredBy_fullName) {
-               filteredArray.push(student)
-            }
-         }
-         if (arrayFilteredBy_faculty.length > 0) {
-            for (let student of arrayFilteredBy_faculty) {
-               filteredArray.push(student)
-            }
-         }
-         if (arrayFilteredBy_yearOfGraduation.length > 0) {
-            for (let student of arrayFilteredBy_yearOfGraduation) {
-               filteredArray.push(student)
-            }
-         }
-      }
-      studentInDOM(filteredArray);
-      filteredArray = [];
-   }
-   function filterBy_yearOfGraduation () {
-      let arrayToWorkWith = [], checkAddOrNo = true;
-      if (arrayFilteredBy_fullName.length > 0) { //if the filter by name worked
-         for (let student of arrayFilteredBy_fullName) {
-            arrayToWorkWith.push(student)
-         }
-      }//if the faculty filter has worked
-      if (arrayFilteredBy_faculty.length > 0) {
-         checkAddOrNo = true;
-         for (let student of arrayFilteredBy_faculty) {
-            for (let sameStudent of arrayToWorkWith) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) { arrayToWorkWith.push(student) }
-         }
-      }//if the filter by the year of start has worked
-      if (arrayFilteredBy_yearOfBeginning.length > 0) {
-         checkAddOrNo = true;
-         for (let student of arrayFilteredBy_yearOfBeginning) {
-            for (let sameStudent of arrayToWorkWith) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) { arrayToWorkWith.push(student) }
-         }
-      }//if none of the filters has worked
-      if (arrayToWorkWith.length === 0) {
-         arrayToWorkWith = startingArray
-      }//the filter itself
-      checkAddOrNo = true;
-      for (let student of arrayToWorkWith) {
-         let number_yearOfGraduation = Number(student.yearOfBeginning + 4);
-         if (number_yearOfGraduation === Number(filterInput_yearOfGraduation.value)) {
-            for (let sameStudent of filteredArray) {
-               if (student === sameStudent) { checkAddOrNo = false }
-            }
-            if (checkAddOrNo) {
-               filteredArray.push(student);
-               arrayFilteredBy_yearOfGraduation.push(student);
-            }
-         }
-      }
-      //if input is empty, clear the array filtered by this filter
-      if (filterInput_yearOfGraduation.value === '') {
-         arrayFilteredBy_yearOfGraduation = [];
-         if (arrayFilteredBy_fullName.length > 0) {
-            for (let student of arrayFilteredBy_fullName) {
-               filteredArray.push(student)
-            }
-         }
-         if (arrayFilteredBy_faculty.length > 0) {
-            for (let student of arrayFilteredBy_faculty) {
-               filteredArray.push(student)
-            }
-         }
-         if (arrayFilteredBy_yearOfBeginning.length > 0) {
-            for (let student of arrayFilteredBy_yearOfBeginning) {
-               filteredArray.push(student)
-            }
-         }
-      }
-      studentInDOM(filteredArray);
-      filteredArray = [];
-   }
-
-   filterInput_fullName.addEventListener('input', (e) => {
-      clearInterval(filteringDelay_fullName)
-      filteringDelay_fullName = setTimeout(filterBy_name, 1000);
-   });
-   filterInput_faculty.addEventListener('input', (e) => {
-      clearInterval(filteringDelay_faculty)
-      filteringDelay_faculty = setTimeout(filterBy_faculty, 1000);
-   });
-   filterInput_yearOfBeginning.addEventListener('input', (e) => {
-      clearInterval(filteringDelay_yearOfBeginning)
-      filteringDelay_yearOfBeginning = setTimeout(filterBy_yearOfBeginning, 1000);
-   });
-   filterInput_yearOfGraduation.addEventListener('input', (e) => {
-      clearInterval(filteringDelay_yearOfGraduation)
-      filteringDelay_yearOfGraduation = setTimeout(filterBy_yearOfGraduation, 1000);
-   });
-
-   } filteringStudents();
+   studentInDOM(filteredArr)
+}
+function startingFilter () {
+   const filterInput_fullName = document.getElementById('filterName');
+   const filterInput_faculty = document.getElementById('filterFaculty');
+   const filterInput_yearOfBeginning = document.getElementById('filterYearOfBeginning');
+   const filterInput_yearOfGraduation = document.getElementById('filterYearOfGraduation');
+   const filterContainer = document.getElementById('filterContainer');
+   let filteringDelay;
+   filterContainer.querySelectorAll('input').forEach(input => input.addEventListener('input', (e) => {
+      clearInterval(filteringDelay)
+      filteringDelay = setTimeout(filteringStudents, 1000);
+   }));
+} startingFilter()
 
 //All that relates to the addition of students in DOM
 function declOfNum (n, textFormsArr) {
