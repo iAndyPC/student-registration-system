@@ -28,9 +28,9 @@ let students = [
 
 function formValidation () {
    //Year of beginning
-   let currentDate = new Date(), currentYear = currentDate.getFullYear();
-   let checkYearOfBeginning, checkDateOfBirth;
-   document.getElementById('yearOfBeginningInput').addEventListener('focusout', function (e) {
+   let currentDate = new Date(), currentYear = currentDate.getFullYear(), checkYearOfBeginning, checkDateOfBirth;
+   document.getElementById('yearOfBeginningInput')
+      .addEventListener('focusout', function (e) {
       let errorMassage_year = document.getElementById('yearOfBeginningHelp');
       if (this.value >= 2000 && this.value <= currentYear) {
          errorMassage_year.classList.remove('alert-warning');
@@ -43,7 +43,8 @@ function formValidation () {
       }
    });
    //Date of birth
-   document.getElementById('dateOfBirthInput').addEventListener('focusout', function (e) {
+   document.getElementById('dateOfBirthInput')
+      .addEventListener('focusout', function (e) {
       let errorMassage_date = document.getElementById('dateOfBirthError');
       let currentDate = new Date(), currentYear = currentDate.getFullYear();
       let currentMonth = currentDate.getMonth()+1, currentDay = currentDate.getDate();
@@ -52,7 +53,6 @@ function formValidation () {
       enteredYear = +enteredYear;
       enteredMonth = +enteredMonth;
       enteredDay = +enteredDay;
-
       if (enteredYear >= 1900 && enteredYear <= currentYear) {
          if (enteredYear === currentYear) { //year
             if (enteredMonth <= currentMonth) { //month
@@ -79,13 +79,14 @@ function formValidation () {
          errorMassage_date.classList.add('open');
          checkDateOfBirth = false;
       }
-   });
-   //Trim
+   }); //Trim
    function trimThis(el) {
-      document.getElementById(el).addEventListener('focusout', function (e) {
+      document.getElementById(el)
+         .addEventListener('focusout', function (e) {
          this.value = this.value.trim();
       })
-   } trimThis('nameInput'); trimThis('surnameInput'); trimThis('patronymicInput'); trimThis('dateOfBirthInput'); trimThis('yearOfBeginningInput'); trimThis('facultyInput');
+   } trimThis('nameInput'); trimThis('surnameInput'); trimThis('patronymicInput');
+   trimThis('dateOfBirthInput'); trimThis('yearOfBeginningInput'); trimThis('facultyInput');
 } formValidation();
 
 function addingStudent () { //An object with a student is created and added to the localStorage array.
@@ -117,29 +118,32 @@ function addingStudent () { //An object with a student is created and added to t
 
 function sortingStudents () { //Sorting students by swapping tableRow in a table
    const tableBody = document.querySelector("tbody");
-   const tableHead = document.querySelector("thead");
    const tableHead_name = document.getElementById('tableHead_name')
    const tableHead_faculty = document.getElementById('tableHead_faculty');
    const tableHead_dateOfBirth = document.getElementById('tableHead_dateOfBirth');
    const tableHead_yearOfBeginning = document.getElementById('tableHead_yearOfBeginning');
    tableHead_name.addEventListener("click", (e) => {
       let sortedRows = Array.from(tableBody.rows)
-         .sort((rowA, rowB) => rowA.cells[0].innerHTML > rowB.cells[0].innerHTML ? 1 : -1);
+         .sort((rowA, rowB) =>
+            rowA.cells[0].innerHTML > rowB.cells[0].innerHTML ? 1 : -1);
       tableBody.append(...sortedRows);
    })
    tableHead_faculty.addEventListener("click", (e) => {
       let sortedRows = Array.from(tableBody.rows)
-         .sort((rowA, rowB) => rowA.cells[1].innerHTML > rowB.cells[1].innerHTML ? 1 : -1);
+         .sort((rowA, rowB) =>
+            rowA.cells[1].innerHTML > rowB.cells[1].innerHTML ? 1 : -1);
       tableBody.append(...sortedRows);
    })
    tableHead_dateOfBirth.addEventListener("click", (e) => {
       let sortedRows = Array.from(tableBody.rows)
-         .sort((rowA, rowB) => rowA.cells[2].innerHTML > rowB.cells[2].innerHTML ? 1 : -1);
+         .sort((rowA, rowB) =>
+            rowA.cells[2].innerHTML > rowB.cells[2].innerHTML ? 1 : -1);
       tableBody.append(...sortedRows);
    })
    tableHead_yearOfBeginning.addEventListener("click", (e) => {
       let sortedRows = Array.from(tableBody.rows)
-         .sort((rowA, rowB) => rowA.cells[3].innerHTML > rowB.cells[3].innerHTML ? 1 : -1);
+         .sort((rowA, rowB) =>
+            rowA.cells[3].innerHTML > rowB.cells[3].innerHTML ? 1 : -1);
       tableBody.append(...sortedRows);
    })
 } sortingStudents();
@@ -156,24 +160,21 @@ function filteringStudents () {
       const regFaculty = new RegExp(filterInput_faculty.value, 'i');
       const regYearOfBeginning = new RegExp(filterInput_yearOfBeginning.value, 'i');
       const regYearOfGraduation = new RegExp(filterInput_yearOfGraduation.value, 'i');
-      const str_fullName = student.surname + student.name + student.patronymic;
-      const str_faculty = student.faculty;
-      const str_yearOfBeginning = String(student.yearOfBeginning);
-      const str_yearOfGraduation = String(student.yearOfBeginning + 4);
-      if (regName.test(str_fullName) && regFaculty.test(str_faculty) && regYearOfBeginning.test(str_yearOfBeginning) && regYearOfGraduation.test(str_yearOfGraduation) ) {
+      const strFullName = student.surname + student.name + student.patronymic;
+      const strFaculty = student.faculty, str_yearOfBeginning = String(student.yearOfBeginning);
+      const strYearOfGraduation = String(student.yearOfBeginning + 4);
+      if (regName.test(strFullName) && regFaculty.test(strFaculty) && regYearOfBeginning.test(str_yearOfBeginning) &&
+         regYearOfGraduation.test(strYearOfGraduation) ) {
          filteredArr.push(student)
       }
    }
    studentInDOM(filteredArr)
 }
 function startingFilter () {
-   const filterInput_fullName = document.getElementById('filterName');
-   const filterInput_faculty = document.getElementById('filterFaculty');
-   const filterInput_yearOfBeginning = document.getElementById('filterYearOfBeginning');
-   const filterInput_yearOfGraduation = document.getElementById('filterYearOfGraduation');
    const filterContainer = document.getElementById('filterContainer');
    let filteringDelay;
-   filterContainer.querySelectorAll('input').forEach(input => input.addEventListener('input', (e) => {
+   filterContainer.querySelectorAll('input').forEach(input =>
+      input.addEventListener('input', (e) => {
       clearInterval(filteringDelay)
       filteringDelay = setTimeout(filteringStudents, 1000);
    }));
@@ -192,8 +193,7 @@ function createDateOfBirth (student) { //Creates a string with birthday and age
    let todayDate = new Date(), todayYear = todayDate.getFullYear();
    let todayMonth = todayDate.getMonth()+1, todayDay = todayDate.getDate();
    let dateOfBirth = new Date(student.dateOfBirth), birthYear = dateOfBirth.getFullYear();
-   let birthMonth = dateOfBirth.getMonth()+1, birthDay = dateOfBirth.getDate();
-   let age = todayYear - birthYear;
+   let birthMonth = dateOfBirth.getMonth()+1, birthDay = dateOfBirth.getDate(), age = todayYear - birthYear;
    if (todayMonth < (birthMonth - 1)) {
       age--;
    }
