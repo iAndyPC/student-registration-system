@@ -204,12 +204,10 @@ function createDateOfBirth (student) { //Creates a string with birthday and age
 }
 function createYearsOfStudy (student) { //Creates a string with years of study and course
    let todayDate = new Date(), todayYear = todayDate.getFullYear();
-   let todayMonth = todayDate.getMonth()+1, yearOfGraduation;
-   let yearOfBeginning = +student.yearOfBeginning, textGraduatedOrCourseNumber;
-   let currentCourse = todayYear - yearOfBeginning;
+   let todayMonth = todayDate.getMonth()+1, yearOfBeginning = +student.yearOfBeginning;
+   let textGraduatedOrCourseNumber, currentCourse = todayYear - yearOfBeginning;
 
    if (currentCourse === 4 && todayMonth > 9 || currentCourse > 4) {
-      yearOfGraduation = yearOfBeginning + 4;
       textGraduatedOrCourseNumber = '(закончил)';
    } else if (todayMonth > 9) {
       textGraduatedOrCourseNumber = '('+ currentCourse+1 +'курс)';
