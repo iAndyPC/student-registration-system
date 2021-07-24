@@ -3,10 +3,11 @@
 
 async function getPosts() {
   const pageParams = new URLSearchParams(window.location.search);
-  let response = await fetch(`https://gorest.co.in/public-api/posts?page=${pageParams.get('page')}`);
+  let response;
   if (pageParams.has('page')) {
-    console.log('HAS')
-    response = await fetch('https://gorest.co.in/public-api/posts');
+    response = await fetch(`https://gorest.co.in/public-api/posts?page=${pageParams.get('page')}`);
+  } else {
+    response = await fetch('https://gorest.co.in/public-api/posts?page=1');
   }
   const json = await response.json();
   return json.data;
