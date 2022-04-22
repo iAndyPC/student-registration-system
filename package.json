@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "lint": "eslint ./",
-    "lint:report": "eslint --format gitlab ./"
+    "lint": "eslint 10_type-transform",
+    "lint:report": "eslint --format gitlab 10_type-transform"
   },
   "author": "",
   "license": "ISC",

@@ -1,1 +1,6 @@
-/Bootstrap
+.idea
+node_modules
+
+/dist
+
+/bootstrap
